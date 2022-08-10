@@ -1,6 +1,7 @@
 package com.alnicode.working.days.control.backend.persistence.entity;
 
 import com.alnicode.working.days.control.util.constants.UserConstants;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -47,5 +48,18 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
 }
