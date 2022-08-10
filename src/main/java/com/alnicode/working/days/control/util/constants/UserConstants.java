@@ -1,4 +1,4 @@
-package com.alnicode.working.days.control.util;
+package com.alnicode.working.days.control.util.constants;
 
 /**
  * The user constants.
