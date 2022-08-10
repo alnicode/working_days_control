@@ -2,10 +2,14 @@ package com.alnicode.working.days.control.backend.persistence.entity;
 
 import com.alnicode.working.days.control.util.constants.RoleConstants;
 import com.alnicode.working.days.control.util.enums.RoleType;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +35,9 @@ public class Role {
 
     @Column(nullable = false, length = RoleConstants.NAME_LENGTH)
     private String name;
+
+    @ManyToMany(mappedBy = "roles", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<User> users = new HashSet<>();
 
     /**
      * Set a Role with a {@link RoleType} enum.

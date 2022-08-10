@@ -1,12 +1,18 @@
 package com.alnicode.working.days.control.backend.persistence.entity;
 
 import com.alnicode.working.days.control.util.constants.UserConstants;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,6 +55,13 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Role> roles = new HashSet<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -60,6 +73,26 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    /**
+     * Add a new role to the user.
+     *
+     * @param role the role to be added.
+     */
+    public void addRole(final Role role) {
+        this.roles.add(role);
+        role.getUsers().add(this);
+    }
+
+    /**
+     * Remove a role to the user.
+     *
+     * @param role the role to be removed.
+     */
+    public void removeRole(final Role role) {
+        this.roles.remove(role);
+        role.getUsers().remove(this);
     }
 
 }
